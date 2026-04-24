@@ -23,3 +23,10 @@ python app.py
 ```
 
 Open `http://127.0.0.1:5000`.
+
+## Quick API Verification
+```bash
+python test_api.py
+```
+
+Expected output: `All Merciful Health CRM API checks passed.`
