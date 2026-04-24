@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merciful Health CRM</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <main class="container">
+        <h1>Merciful Health CRM</h1>
+        <p>Track patients, appointments, and follow-up actions in one place.</p>
+
+        <section class="card">
+            <h2>Add Patient</h2>
+            <form id="patient-form">
+                <input name="full_name" placeholder="Full name" required>
+                <input name="phone" placeholder="Phone number" required>
+                <select name="status" required>
+                    <option value="">Select status</option>
+                    <option value="New">New</option>
+                    <option value="In Treatment">In Treatment</option>
+                    <option value="Follow-up Needed">Follow-up Needed</option>
+                    <option value="Closed">Closed</option>
+                </select>
+                <input name="next_follow_up" type="date">
+                <textarea name="notes" placeholder="Patient notes"></textarea>
+                <button type="submit">Save Patient</button>
+            </form>
+        </section>
+
+        <section class="card">
+            <h2>Recent Patients</h2>
+            <ul id="patient-list"></ul>
+        </section>
+    </main>
+
+    <script>
+        const form = document.getElementById("patient-form");
+        const patientList = document.getElementById("patient-list");
+
+        async function loadPatients() {
+            const response = await fetch("/api/patients");
+            const patients = await response.json();
+            patientList.innerHTML = "";
+            patients.forEach((patient) => {
+                const item = document.createElement("li");
+                item.textContent = `${patient.full_name} - ${patient.status} - Follow-up: ${patient.next_follow_up || "Not set"}`;
+                patientList.appendChild(item);
+            });
+        }
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const data = Object.fromEntries(new FormData(form).entries());
+            const response = await fetch("/api/patients", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+
+            if (response.ok) {
+                form.reset();
+                loadPatients();
+            } else {
+                const error = await response.json();
+                alert(error.error || "Could not save patient");
+            }
+        });
+
+        loadPatients();
+    </script>
+</body>
+</html>

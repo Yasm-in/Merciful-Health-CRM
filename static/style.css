@@ -1,0 +1,45 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f1f5f9;
+    color: #0f172a;
+}
+
+.container {
+    width: min(840px, 92%);
+    margin: 32px auto;
+}
+
+h1 {
+    margin-bottom: 6px;
+}
+
+.card {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 16px;
+}
+
+form {
+    display: grid;
+    gap: 10px;
+}
+
+input, select, textarea, button {
+    font: inherit;
+    padding: 10px;
+}
+
+button {
+    background: #1d4ed8;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+ul {
+    padding-left: 18px;
+}
