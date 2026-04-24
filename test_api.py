@@ -27,6 +27,14 @@ def run_checks():
     patients = response.get_json()
     assert any(p["full_name"] == "Amina Yusuf" for p in patients), "New patient should be retrievable"
 
+    dashboard = client.get("/api/dashboard")
+    assert dashboard.status_code == 200, "GET /api/dashboard should return 200"
+    assert "summary" in dashboard.get_json(), "Dashboard should return summary stats"
+
+    csv_export = client.get("/api/export/patients.csv")
+    assert csv_export.status_code == 200, "CSV export should return 200"
+    assert "text/csv" in csv_export.content_type, "CSV export content type should be text/csv"
+
     print("All Merciful Health CRM API checks passed.")
 
 
